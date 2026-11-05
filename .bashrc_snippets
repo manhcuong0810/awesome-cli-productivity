@@ -1,0 +1,351 @@
+# awesome-cli-productivity
+
+> **Collection of powerful Bash/Zsh aliases and functions for developers**  
+> Boost your terminal workflow, automate repetitive tasks, and keep your development environment tidy.
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)  
+[![Shell](https://img.shields.io/badge/language-shell-brightgreen.svg)](https://www.shellcheck.net/)  
+[![Donate](https://img.shields.io/badge/donate-PayPal-orange.svg)](https://paypal.me/manhcuong0810)
+
+---
+
+## Table of Contents
+
+1. [Features](#features)  
+2. [Installation](#installation)  
+3. [Quick Start](#quick-start)  
+4. [Aliases](#aliases)  
+5. [Functions](#functions)  
+6. [Advanced Usage](#advanced-usage)  
+7. [Customization](#customization)  
+8. [Contributing](#contributing)  
+9. [License](#license)  
+10. [Donate](#donate)  
+
+---
+
+## Features <a name="features"></a>
+
+- **Git shortcuts** – one‑liner commands for common Git workflows.  
+- **File navigation** – fuzzy find, directory jumping, and safe deletion.  
+- **Project scaffolding** – bootstrap Node, Python, Go, Rust, and Docker projects.  
+- **System monitoring** – quick view of CPU, memory, ports, and processes.  
+- **Networking utilities** – IP lookup, ping with timestamps, and port forwarding.  
+- **Productivity timers** – Pomodoro, work‑break cycles, and time tracking.  
+- **Cross‑shell support** – works in Bash 4+, Zsh 5+, and Fish (via `eval`).  
+
+All aliases are **non‑destructive** by default (e.g., `rm` is aliased to `trash`).
+
+---
+
+## Installation <a name="installation"></a>
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/yourusername/awesome-cli-productivity.git
+cd awesome-cli-productivity
+```
+
+### 2️⃣ Source the script in your shell configuration
+
+#### Bash (`~/.bashrc` or `~/.bash_profile`)
+
+```bash
+# Add this line at the end of your .bashrc
+source "$HOME/awesome-cli-productivity/awesome.sh"
+```
+
+#### Zsh (`~/.zshrc`)
+
+```zsh
+# Add this line at the end of your .zshrc
+source "$HOME/awesome-cli-productivity/awesome.sh"
+```
+
+### 3️⃣ Reload the shell
+
+```bash
+exec $SHELL -l   # or simply open a new terminal window
+```
+
+### 4️⃣ Verify installation
+
+```bash
+awesome_version
+# Expected output: awesome-cli-productivity v1.0.0
+```
+
+---
+
+## Quick Start <a name="quick-start"></a>
+
+```bash
+# Jump to a project directory (auto-completes from $PROJECTS)
+proj my-app
+
+# Create a new Node.js project with a single command
+nodeinit my-new-app
+
+# Show a pretty Git status
+g
+
+# Delete a file safely (moves to ~/.trash)
+del src/old_file.js
+
+# Open a quick HTTP server on port 8000
+serve 8000
+
+# Start a 25‑minute Pomodoro timer
+pomodoro start
+```
+
+---
+
+## Aliases <a name="aliases"></a>
+
+| Alias | Description | Example |
+|-------|-------------|---------|
+| `g` | Short, colored `git status` | `g` |
+| `ga` | `git add .` | `ga` |
+| `gcmsg` | `git commit -m` | `gcmsg "Fix bug"` |
+| `gp` | `git push` (with upstream detection) | `gp` |
+| `gl` | `git log --oneline --graph --decorate` | `gl` |
+| `gs` | `git stash` | `gs` |
+| `gsp` | `git stash pop` | `gsp` |
+| `l` | `ls -lah --color=auto` | `l` |
+| `la` | `ls -A` | `la` |
+| `ll` | `ls -lF` | `ll` |
+| `..` | `cd ..` | `..` |
+| `...` | `cd ../../` | `...` |
+| `....` | `cd ../../../` | `....` |
+| `c..` | `cd .. && pwd` (quick check) | `c..` |
+| `mkd` | `mkdir -p` and `cd` into it | `mkd new_folder` |
+| `del` | Move file(s) to `~/.trash` (safe rm) | `del unwanted.txt` |
+| `emptytrash` | Permanently empty `~/.trash` | `emptytrash` |
+| `trash` | List contents of `~/.trash` | `trash` |
+| `serve` | Quick Python HTTP server (default port 8000) | `serve 8080` |
+| `ipinfo` | Show public IP + ISP info | `ipinfo` |
+| `myip` | Show local IP addresses | `myip` |
+| `ports` | List listening ports with process names | `ports` |
+| `psg` | `ps aux | grep -i` (search processes) | `psg node` |
+| `histg` | Search history (case‑insensitive) | `histg docker` |
+| `extract` | Extract archives (`.tar.gz`, `.zip`, `.rar`, …) | `extract archive.tar.gz` |
+| `zipf` | Create a zip from current directory | `zipf project.zip` |
+| `t` | Show current date/time in ISO format | `t` |
+| `now` | Show Unix timestamp | `now` |
+| `calc` | Simple CLI calculator (bc) | `calc "3.14 * 2"` |
+| `timer` | One‑off countdown timer (seconds) | `timer 300` |
+| `pomodoro` | Pomodoro timer (subcommands: start, stop, status) | `pomodoro start` |
+| `weather` | Fetch current weather for a city (requires `curl` & `jq`) | `weather London` |
+| `gitignore` | Generate .gitignore from gitignore.io | `gitignore python node` |
+| `proj` | Jump to a directory under `$PROJECTS` (auto‑completion) | `proj my-repo` |
+| `vscode` | Open VS Code in current folder | `vscode .` |
+| `nvim` | Open Neovim in current folder | `nvim .` |
+| `docker-clean` | Remove stopped containers, dangling images, unused volumes | `docker-clean` |
+| `k` | `kubectl` shortcut (if `kubectl` is installed) | `k get pods` |
+| `kctx` | Switch Kubernetes context (requires `kubectx`) | `kctx dev` |
+| `s` | `git switch` (branch checkout) | `s feature/login` |
+| `b` | `git branch -vv` (list branches with upstream) | `b` |
+| `undo` | `git reset --soft HEAD~1` (undo last commit) | `undo` |
+| `reload` | Reload current shell configuration | `reload` |
+
+---
+
+## Functions <a name="functions"></a>
+
+Below are the core functions shipped with **awesome-cli-productivity**. All functions are defined in `awesome.sh` and are ready to use after sourcing.
+
+### 1️⃣ `nodeinit <project_name> [--typescript]`
+
+Bootstrap a Node.js (or TypeScript) project with sensible defaults.
+
+```bash
+nodeinit my-app               # creates folder, npm init -y, git init, .gitignore
+nodeinit my-ts-app --typescript   # adds tsconfig.json, installs typescript
+```
+
+```bash
+nodeinit() {
+  local name=$1
+  local ts_flag=$2
+  if [[ -z "$name" ]]; then
+    echo "Usage: nodeinit <project_name> [--typescript]"
+    return 1
+  fi
+  mkdir -p "$name" && cd "$name" || return
+  git init -q
+  npm init -y >/dev/null
+  npx license mit >/dev/null 2>&1 || true
+  cat > .gitignore <<'EOF'
+node_modules
+dist
+.env
+npm-debug.log
+.DS_Store
+EOF
+  if [[ "$ts_flag" == "--typescript" ]]; then
+    npm install -D typescript @types/node >/dev/null
+    npx tsc --init --rootDir src --outDir dist --esModuleInterop >/dev/null
+    mkdir -p src && echo "console.log('Hello, TypeScript!');" > src/index.ts
+    echo "npm run build && node dist/index.js" > run.sh
+    chmod +x run.sh
+    echo "{
+  \"scripts\": {
+    \"build\": \"tsc\",
+    \"start\": \"node dist/index.js\"
+  }
+}" > package.json
+  else
+    echo "console.log('Hello, Node!');" > index.js
+  fi
+  echo "✅ Project '$name' created."
+}
+```
+
+### 2️⃣ `pythoninit <project_name> [--venv]`
+
+Create a fresh Python package skeleton.
+
+```bash
+pythoninit mylib --venv
+```
+
+```bash
+pythoninit() {
+  local name=$1
+  local venv_flag=$2
+  if [[ -z "$name" ]]; then
+    echo "Usage: pythoninit <project_name> [--venv]"
+    return 1
+  fi
+  mkdir -p "$name"/{src,tests} && cd "$name" || return
+  git init -q
+  cat > .gitignore <<'EOF'
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.log
+.env
+venv/
+EOF
+  cat > src/__init__.py <<'EOF'
+"""Top level package for $name."""
+EOF
+  cat > tests/__init__.py <<'EOF'
+"""Tests for $name."""
+EOF
+  cat > setup.cfg <<'EOF'
+[metadata]
+name = $name
+version = 0.1.0
+author = Your Name
+description = A short description
+long_description = file: README.md
+long_description_content_type = text/markdown
+url = https://github.com/yourusername/$name
+classifiers =
+    Programming Language :: Python :: 3
+    License :: OSI Approved :: MIT License
+    Operating System :: OS Independent
+
+[options]
+package_dir =
+    = src
+packages = find:
+python_requires = >=3.8
+EOF
+  cat > README.md <<EOF
+# $name
+
+A Python library.
+
+## Installation
+
+```bash
+pip install $name
+```
+
+## Usage
+
+```python
+import $name
+```
+EOF
+  if [[ "$venv_flag" == "--venv" ]]; then
+    python3 -m venv venv
+    echo "✅ Virtual environment created at ./venv"
+  fi
+  echo "✅ Python project '$name' scaffolded."
+}
+```
+
+### 3️⃣ `goinit <module_name>`
+
+Initialize a Go module with a basic project layout.
+
+```bash
+goinit github.com/user/project
+```
+
+```bash
+goinit() {
+  local mod=$1
+  if [[ -z "$mod" ]]; then
+    echo "Usage: goinit <module_path>"
+    return 1
+  fi
+  mkdir -p "$(basename "$mod")" && cd "$(basename "$mod")" || return
+  go mod init "$mod"
+  mkdir -p cmd internal pkg
+  cat > cmd/main.go <<'EOF'
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, Go!")
+}
+EOF
+  cat > README.md <<EOF
+# $(basename "$mod")
+
+A Go module.
+
+## Build
+
+```bash
+go build ./cmd
+```
+EOF
+  echo "✅ Go module '$mod' initialized."
+}
+```
+
+### 4️⃣ `docker-clean`
+
+Remove all stopped containers, dangling images, and unused volumes in one command.
+
+```bash
+docker-clean
+```
+
+```bash
+docker-clean() {
+  echo "🧹 Cleaning Docker..."
+  docker container prune -f
+  docker image prune -af
+  docker volume prune -f
+  docker network prune -f
+  echo "✅ Docker cleanup complete."
+}
+```
+
+### 5️⃣ `pomodoro start|stop|status`
+
+Simple Pomodoro timer using `notify-send` (Linux) or `osascript` (macOS).
+
+```bash
+pomodoro start          # 25‑
